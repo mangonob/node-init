@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import { createServer } from "http";
 
 const app = express();
 
@@ -20,6 +21,38 @@ app.post("/", (_, res) => {
   }, 10000);
 });
 
-app.options("/");
+const checkPortIsAvaliable = async (port: number): Promise<boolean> => {
+  return new Promise((resolve, reject) => {
+    let s = createServer();
+    s.once("error", (err) => {
+      s.close();
+      resolve(false);
+    });
+    s.once("listening", () => {
+      resolve(true);
+      s.close();
+    });
+    s.listen(port);
+  });
+};
 
-app.listen(3030);
+const minPort = 3030;
+const maxPort = 3030;
+
+async function runServe() {
+  let found = false;
+  for (const offset of Array(maxPort - minPort + 1).keys()) {
+    const port = minPort + offset;
+    const canUse = await checkPortIsAvaliable(port);
+    if (canUse) {
+      app.listen(port);
+      console.info(`Serving HTTP on :: port ${port} (http://[::]:3030/) ...`);
+      found = true;
+      break;
+    }
+  }
+
+  if (!found) app.listen(minPort);
+}
+
+runServe();
