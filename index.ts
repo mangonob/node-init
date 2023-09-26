@@ -37,7 +37,7 @@ const checkPortIsAvaliable = async (port: number): Promise<boolean> => {
 };
 
 const minPort = 3030;
-const maxPort = 3030;
+const maxPort = 3100;
 
 async function runServe() {
   let found = false;
