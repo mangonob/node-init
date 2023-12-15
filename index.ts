@@ -14,13 +14,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.post("/", (req, res) => {
-  const { interval = 42 } = req.body;
+  const { interval = 0 } = req.body;
   console.info(`Receive ${JSON.stringify(req.body)}`, new Date());
 
-  setTimeout(() => {
+  if (interval > 0) {
+    setTimeout(() => {
+      res.status(200).end();
+      console.info("Completed", new Date());
+    }, interval);
+  } else {
     res.status(200).end();
-    console.info("Completed", new Date());
-  }, interval);
+    console.info("Immediate", new Date());
+  }
 });
 
 const checkPortIsAvaliable = async (port: number): Promise<boolean> => {
