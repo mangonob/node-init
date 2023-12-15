@@ -10,15 +10,18 @@ app.use(
     optionsSuccessStatus: 200,
   })
 );
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.post("/", (_, res) => {
-  console.info("Start");
+app.post("/", (req, res) => {
+  const { interval = 1000 } = req.body;
+  console.info(`Receive ${JSON.stringify(req.body)}`, new Date());
 
   setTimeout(() => {
     res.setHeader("Content-Type", "application/json");
-    res.json({ value: 42 });
-    console.info("Completed");
-  }, 10000);
+    res.json(req.body);
+    console.info("Completed", new Date());
+  }, interval);
 });
 
 const checkPortIsAvaliable = async (port: number): Promise<boolean> => {
