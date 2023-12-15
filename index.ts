@@ -49,7 +49,9 @@ async function runServe() {
     const canUse = await checkPortIsAvaliable(port);
     if (canUse) {
       app.listen(port);
-      console.info(`Serving HTTP on :: port ${port} (http://[::]:3030/) ...`);
+      console.info(
+        `Serving HTTP on :: port ${port} (http://[::]:${port}/) ...`
+      );
       found = true;
       break;
     }
