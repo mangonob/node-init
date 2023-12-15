@@ -14,12 +14,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.post("/", (req, res) => {
-  const { interval = 1000 } = req.body;
+  const { interval = 42 } = req.body;
   console.info(`Receive ${JSON.stringify(req.body)}`, new Date());
 
   setTimeout(() => {
-    res.setHeader("Content-Type", "application/json");
-    res.json(req.body);
+    res.status(200).end();
     console.info("Completed", new Date());
   }, interval);
 });
