@@ -19,11 +19,11 @@ app.post("/", (req, res) => {
 
   if (interval > 0) {
     setTimeout(() => {
-      res.status(200).end();
+      res.json({ success: true });
       console.info("Completed", new Date());
     }, interval);
   } else {
-    res.status(200).end();
+    res.json({ success: true });
     console.info("Immediate", new Date());
   }
 });
